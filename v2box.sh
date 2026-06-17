@@ -34,7 +34,7 @@ MARKER_END="# <<< sshtunnel managed block <<<"
 NOLOGIN="/usr/sbin/nologin"
 
 # badvpn-udpgw (UDP gateway) — bound to loopback; clients reach it via the SSH tunnel.
-UDPGW_ADDR="127.0.0.1"
+UDPGW_ADDR="0.0.0.0"
 UDPGW_PORT="7300"
 UDPGW_SERVICE="badvpn-udpgw"
 UDPGW_UNIT="/etc/systemd/system/${UDPGW_SERVICE}.service"
