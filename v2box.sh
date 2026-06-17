@@ -34,7 +34,7 @@ MARKER_END="# <<< sshtunnel managed block <<<"
 NOLOGIN="/usr/sbin/nologin"
 
 # badvpn-udpgw (UDP gateway) — bound to loopback; clients reach it via the SSH tunnel.
-UDPGW_ADDR="0.0.0.0"
+UDPGW_ADDR="127.0.0.1"
 UDPGW_PORT="7300"
 UDPGW_SERVICE="badvpn-udpgw"
 UDPGW_UNIT="/etc/systemd/system/${UDPGW_SERVICE}.service"
@@ -200,7 +200,7 @@ Description=BadVPN udpgw (UDP over TCP gateway for SSH tunnel)
 After=network.target
 
 [Service]
-ExecStart=${UDPGW_BIN} --listen-addr ${UDPGW_ADDR}:${UDPGW_PORT} --max-clients 1024 --max-connections-for-client 32
+ExecStart=${UDPGW_BIN} --listen-addr ${UDPGW_ADDR}:${UDPGW_PORT} --max-clients 1024 --max-connections-for-client 256
 Restart=on-failure
 RestartSec=3
 # Hardening: no privileges needed, loopback-only.
@@ -322,6 +322,7 @@ EOF
 
   echo
   info "${BLD}Init complete.${RST}"
+  echo "allow connections to 7300 port: sudo ufw allow 7300 && sudo ufw reload"
   echo "  UDP gateway (udpgw): ${UDPGW_ADDR}:${UDPGW_PORT} (loopback only)."
   echo "    In the client (v2box): set udpgw port to ${UDPGW_PORT} for UDP, or 0 to disable UDP."
   warn "Keep your CURRENT ssh session open and verify a new login works before disconnecting."
